@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:agenda_sqlite/components/text_form_widget.dart';
+import 'package:agenda_sqlite/components/text_form_field.dart';
 import 'package:agenda_sqlite/models/contact_models.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +50,7 @@ class _ContactPageState extends State<ContactPage> {
           title: Text(_editedContact!.name ?? "Novo Contato"),
           centerTitle: true,
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90),),
               gradient: LinearGradient(
                   colors: [(Colors.grey), (Colors.pink)],
@@ -62,13 +62,13 @@ class _ContactPageState extends State<ContactPage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 150),
+              const SizedBox(height: 150),
               _editNome(),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _editiEmail(),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _editTelefone(),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               btnSave(),
             ],
           ),
@@ -94,15 +94,15 @@ class _ContactPageState extends State<ContactPage> {
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
                 colors: [(Colors.grey), (Colors.pink)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter),
           ),
-          child: Text(
+          child: const Text(
             'Salvar',
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.white,fontSize: 22,
             ),
           ),
         ),
@@ -113,14 +113,21 @@ class _ContactPageState extends State<ContactPage> {
   _editTelefone() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: TextFieldWidget(
-        "Phone",
-        Icon(Icons.phone, color: Colors.blue),
-        controller: _phoneController,
-        onChanged: (text) {
-          _userEdited = true;
-          _editedContact!.phone = text;
-        },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Colors.grey[200],
+        ),
+        child: TextFormWidget(
+          "Telefone",
+          'Digite o Telefone',
+          const Icon(Icons.phone, color: Colors.blue),
+          controller: _phoneController,
+          onChanged: (text) {
+            _userEdited = true;
+            _editedContact!.phone = text;
+          },
+        ),
       ),
     );
   }
@@ -128,14 +135,21 @@ class _ContactPageState extends State<ContactPage> {
   _editiEmail() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: TextFieldWidget(
-        "Email",
-        Icon(Icons.email, color: Colors.blue),
-        controller: _emailController,
-        onChanged: (text) {
-          _userEdited = true;
-          _editedContact!.email = text;
-        },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Colors.grey[200],
+        ),
+        child: TextFormWidget(
+          "Email",
+          'Digite o Email',
+          const Icon(Icons.email, color: Colors.blue),
+          controller: _emailController,
+          onChanged: (text) {
+            _userEdited = true;
+            _editedContact!.email = text;
+          },
+        ),
       ),
     );
   }
@@ -143,16 +157,23 @@ class _ContactPageState extends State<ContactPage> {
   _editNome() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: TextFieldWidget(
-        "Nome",
-        Icon(Icons.people, color: Colors.blue),
-        controller: _nameController,
-        onChanged: (text) {
-          _userEdited = true;
-          setState(() {
-            _editedContact!.name = text;
-          });
-        },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Colors.grey[200],
+        ),
+        child: TextFormWidget(
+          "Nome",
+          'Digite o Nome',
+          const Icon(Icons.people, color: Colors.blue),
+          controller: _nameController,
+          onChanged: (text) {
+            _userEdited = true;
+            setState(() {
+              _editedContact!.name = text;
+            });
+          },
+        ),
       ),
     );
   }

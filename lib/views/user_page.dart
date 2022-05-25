@@ -91,7 +91,7 @@ class UserPage extends StatelessWidget {
                     SizedBox(height: 15),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.phone,
                           size: 60,
                           color: Colors.deepPurple,

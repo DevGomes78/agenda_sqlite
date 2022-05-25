@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TextFormWidget extends StatelessWidget {
   String? labelText;
   String? hintText;
-  Widget? prefixIcon;
+  Widget? Icon;
   Widget? sulfixIcon;
   FormFieldValidator<String>? validator;
   TextEditingController? controller;
@@ -13,11 +13,11 @@ class TextFormWidget extends StatelessWidget {
   TextFormWidget(
       this.labelText,
       this.hintText,
-      this.prefixIcon,{
+      this.Icon,{
         this.sulfixIcon,
         this.validator,
         this.controller,
-        this.obscureText = true,
+        this.obscureText = false,
         this.onChanged,
       });
 
@@ -31,7 +31,7 @@ class TextFormWidget extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(50),
         ),
-        prefixIcon: prefixIcon,
+        prefixIcon: Icon,
         suffixIcon: sulfixIcon,
       ),
       validator: validator,

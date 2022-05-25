@@ -8,13 +8,13 @@ class ContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: 150,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(90),
         ),
         gradient: LinearGradient(
-            colors: [(Colors.black), (Colors.blue)],
+            colors: [(Colors.white60), (Colors.pink)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter),
       ),
@@ -24,7 +24,7 @@ class ContainerWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              margin: const EdgeInsets.only(right: 20, top: 120),
+              margin: const EdgeInsets.only(right: 20, top: 60),
               alignment: Alignment.bottomRight,
               child: Text(
                 text!,

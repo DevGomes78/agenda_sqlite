@@ -1,12 +1,6 @@
+import '../constants/user_colum_models.dart';
+
 class Contact {
-
-  final String contactTable = "contactTable";
-  final String idColumn = "idColumn";
-  final String nameColumn = "nameColumn";
-  final String emailColumn = "emailColumn";
-  final String phoneColumn = "phoneColumn";
-  final String imgColumn = "imgColumn";
-
   int? id;
   String? name;
   String? email;
@@ -15,25 +9,24 @@ class Contact {
 
   Contact();
 
-  Contact.fromMap(Map map){
-    id = map[idColumn];
-    name = map[nameColumn];
-    email = map[emailColumn];
-    phone = map[phoneColumn];
-    img = map[imgColumn];
+  Contact.fromMap(Map map) {
+    id = map[UserColumn().idColumn];
+    name = map[UserColumn().nameColumn];
+    email = map[UserColumn().emailColumn];
+    phone = map[UserColumn().phoneColumn];
+    img = map[UserColumn().imgColumn];
   }
 
-  Map<String,dynamic> toMap() {
+  Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
-      nameColumn: name,
-      emailColumn: email,
-      phoneColumn: phone,
-      imgColumn: img
+      UserColumn().nameColumn: name,
+      UserColumn().emailColumn: email,
+      UserColumn().phoneColumn: phone,
+      UserColumn().imgColumn: img
     };
     if (id != null) {
-      map[idColumn] = id;
+      map[UserColumn().idColumn] = id;
     }
     return map;
   }
-
 }

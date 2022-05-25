@@ -1,262 +1,202 @@
-import 'dart:io';
 
-import 'package:agenda_sqlite/helpers/contact_helper.dart';
-import 'package:agenda_sqlite/models/contact_models.dart';
-import 'package:agenda_sqlite/views/user_page.dart';
+import 'package:agenda_sqlite/components/container_widget.dart';
+import 'package:agenda_sqlite/views/user_list.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'contact_page.dart';
-
-enum OrderOptions { orderaz, orderza }
 
 class HomePage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  ContactHelper helper = ContactHelper();
-
-  List<Contact> contacts = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    _getAllContacts();
-  }
+  int _indiceAtual = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _AppBar(),
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showContactPage();
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.pink,
-      ),
-      body: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
-          itemCount: contacts.length,
-          itemBuilder: (context, index) {
-            return _contactCard(context, index);
-          }),
-    );
-  }
 
-  _contactCard(BuildContext context, int index) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Card(
-        elevation: 5,
-        color: Colors.white70,
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UserPage(
-                      contact: contacts[index],
-                    )));
-          },
-          child: ListTile(
-            isThreeLine: true,
-            title: Text(
-              contacts[index].name ?? "",
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  contacts[index].email ?? "",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                Text(
-                  contacts[index].phone ?? "",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-            trailing: Container(
-              width: 100,
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      _showContactPage(contact: contacts[index]);
-                    },
-                    icon: Icon(
-                      Icons.edit,
-                      size: 30,
-                      color: Colors.blue,
-                    ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            ContainerWidget(text: 'Clinica'),
+            Container(
+              height: 450,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: GridView(
+                  gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 20,
                   ),
-                  IconButton(
-                    onPressed: () {
-                      helper.deleteContact(contacts[index].id);
-                      setState(() {
-                        contacts.removeAt(index);
-                      });
-                    },
-                    icon: Icon(
-                      Icons.delete,
-                      size: 30,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  _AppBar() {
-    return AppBar(
-      elevation: 0,
-      title: Text("Contatos"),
-      backgroundColor: Colors.white,
-      centerTitle: true,
-      toolbarHeight: 70,
-      actions: <Widget>[
-        PopupMenuButton<OrderOptions>(
-          itemBuilder: (context) => <PopupMenuEntry<OrderOptions>>[
-            const PopupMenuItem<OrderOptions>(
-              child: Text("Ordenar de A-Z"),
-              value: OrderOptions.orderaz,
-            ),
-            const PopupMenuItem<OrderOptions>(
-              child: Text("Ordenar de Z-A"),
-              value: OrderOptions.orderza,
-            ),
-          ],
-          onSelected: _orderList,
-        )
-      ],
-      flexibleSpace: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(90),
-          ),
-          gradient: LinearGradient(
-              colors: [(Colors.grey), (Colors.pink)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter),
-        ),
-      ),
-    );
-  }
-
-  void _showOptions(BuildContext context, int index) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return BottomSheet(
-            onClosing: () {},
-            builder: (context) {
-              return Container(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: FlatButton(
-                        child: Text(
-                          "Ligar",
-                          style: TextStyle(color: Colors.red, fontSize: 20.0),
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserList()));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.lightGreen,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              blurRadius: 10,
+                            ),
+                          ]
                         ),
-                        onPressed: () {
-                          launch("tel:${contacts[index].phone}");
-                          Navigator.pop(context);
-                        },
+                        child: Column(
+                          children: const [
+                            SizedBox(height: 20),
+                            Icon(
+                              Icons.person,
+                              size: 80,
+                              color: Colors.white60,
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Contatos',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: FlatButton(
-                        child: Text(
-                          "Editar",
-                          style: TextStyle(color: Colors.red, fontSize: 20.0),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          _showContactPage(contact: contacts[index]);
-                        },
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.orange,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 5,
+                            ),
+                          ]
+                      ),
+                      child: Column(
+                        children: const [
+                          SizedBox(height: 20),
+                          Icon(
+                            Icons.article,
+                            size: 80,
+                            color: Colors.white60,
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Agenda',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: FlatButton(
-                        child: Text(
-                          "Excluir",
-                          style: TextStyle(color: Colors.red, fontSize: 20.0),
-                        ),
-                        onPressed: () {
-                          helper.deleteContact(contacts[index].id);
-                          setState(() {
-                            contacts.removeAt(index);
-                            Navigator.pop(context);
-                          });
-                        },
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.pink.withOpacity(0.3),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 1,
+                            ),
+                          ]
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 20),
+                          Icon(
+                            Icons.account_box_rounded,
+                            size: 80,
+                            color: Colors.white60,
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Fornecedores',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.lightBlueAccent,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              blurRadius: 10,
+                            ),
+                          ]
+                      ),
+                      child: Column(
+                        children: const [
+                          SizedBox(height: 20),
+                          Icon(
+                            Icons.receipt_sharp,
+                            size: 80,
+                            color: Colors.white60,
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Relatorios',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              );
-            },
-          );
-        });
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white70,
+        currentIndex: _indiceAtual,
+        onTap: onTabTapped,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.water_damage_outlined, size: 30),
+              title: Text("Minha conta")
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.article, size: 30),
+              title: Text("Minha Agenda")
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person, size: 30),
+              title: Text("Meus Contatos")
+          ),
+        ],
+      ),
+    );
   }
-
-  void _showContactPage({Contact? contact}) async {
-    final recContact = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ContactPage(
-              contact: contact,
-            )));
-    if (recContact != null) {
-      if (contact != null) {
-        await helper.updateContact(recContact);
-      } else {
-        await helper.saveContact(recContact);
-      }
-      _getAllContacts();
-    }
-  }
-
-  void _getAllContacts() {
-    helper.getAllContacts().then((list) {
-      setState(() {
-        contacts = list as List<Contact>;
-      });
+  void onTabTapped(int index) {
+    setState(() {
+      _indiceAtual = index;
     });
-  }
-
-  void _orderList(OrderOptions result) {
-    switch (result) {
-      case OrderOptions.orderaz:
-        contacts.sort((a, b) {
-          return a.name!.toLowerCase().compareTo(b.name!.toLowerCase());
-        });
-        break;
-      case OrderOptions.orderza:
-        contacts.sort((a, b) {
-          return b.name!.toLowerCase().compareTo(a.name!.toLowerCase());
-        });
-        break;
-    }
-    setState(() {});
   }
 }

@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:agenda_sqlite/components/button_widget.dart';
 import 'package:agenda_sqlite/components/text_form_field.dart';
 import 'package:agenda_sqlite/components/text_widget.dart';
+import 'package:agenda_sqlite/constants/preferences.dart';
+import 'package:agenda_sqlite/models/login_models.dart';
 import 'package:agenda_sqlite/utils/service_validate.dart';
+import 'package:agenda_sqlite/views/cadastro_login_page.dart';
+import 'package:agenda_sqlite/views/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -11,7 +18,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
-
   TextEditingController senhaController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -36,7 +42,7 @@ class _LoginState extends State<Login> {
               const SizedBox(height: 50),
               InkWell(
                 onTap: () {
-                  _doLogin(context);
+                  _doLogin();
                 },
                 child: ButtonWidget(
                   text: 'Login',
@@ -45,6 +51,8 @@ class _LoginState extends State<Login> {
               const SizedBox(height: 10),
               InkWell(
                 onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Cadastro()));
                 },
                 child: Textwidget(
                   cadastro: 'Nao tem Cadastro?  ',
@@ -72,7 +80,7 @@ class _LoginState extends State<Login> {
         ),
         height: 180,
       ),
-     // clipper: MycustonClipper(),
+      // clipper: MycustonClipper(),
     );
   }
 
@@ -87,9 +95,7 @@ class _LoginState extends State<Login> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        onTap: () {
-
-        },
+        onTap: () {},
       ),
     );
   }
@@ -117,11 +123,12 @@ class _LoginState extends State<Login> {
                 _obscureText = !_obscureText;
               });
             },
-            child: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+            child: Icon(
+              _obscureText ? Icons.visibility : Icons.visibility_off,
+            ),
           ),
           controller: senhaController,
           obscureText: _obscureText,
-
         ),
       ),
     );
@@ -152,9 +159,30 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void _doLogin(context) async {
-    if (_formKey.currentState!.validate()) {
-
+  void _doLogin() async {
+    String mailForm = emailController.text;
+    String passForm = senhaController.text;
+    LoginModel savedUser = await _getSavedUser();
+    if (mailForm == savedUser.mail && passForm == savedUser.password) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login ou senha Invalidos'),
+        ),
+      );
     }
+  }
+
+  Future<LoginModel> _getSavedUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? jsonUser = prefs.getString(preferencesKeys.activeUser);
+    Map<String, dynamic> mapUser = jsonDecode(jsonUser!);
+    LoginModel loginModel = LoginModel.fromJson(mapUser);
+    return loginModel;
   }
 }
