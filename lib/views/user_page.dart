@@ -10,22 +10,17 @@ class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 100,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(90),
-              ),
-              gradient: LinearGradient(
-                  colors: [(Colors.grey), (Colors.pink)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
+
+          elevation: 1,
+          backgroundColor: Colors.deepPurple,
+          title: Text(
+            contact!.name.toString(),
+            style: TextStyle(
+              color: Colors.white,
             ),
           ),
-          backgroundColor: Colors.white,
-          title: Text(contact!.name.toString()),
           centerTitle: true,
         ),
         body: Column(
@@ -62,7 +57,7 @@ class UserPage extends StatelessWidget {
                         ),
                         Text(
                           '    ${contact!.name.toString()}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 25,
                           ),
                         ),
@@ -73,14 +68,14 @@ class UserPage extends StatelessWidget {
                     SizedBox(height: 15),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.mail,
                           size: 60,
                           color: Colors.lightBlue,
                         ),
                         Text(
                           '    ${contact!.email.toString()}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 25,
                           ),
                         ),
@@ -100,7 +95,6 @@ class UserPage extends StatelessWidget {
                           '    ${contact!.phone.toString()}',
                           style: TextStyle(fontSize: 25),
                         ),
-
                       ],
                     ),
                     SizedBox(height: 15),
@@ -109,7 +103,7 @@ class UserPage extends StatelessWidget {
                     Row(
                       children: [
                         InkWell(
-                          onTap: (){},
+                          onTap: () {},
                           child: Container(
                               height: 60,
                               child: Image.asset('images/whats.png')),
@@ -118,7 +112,6 @@ class UserPage extends StatelessWidget {
                           '    ${contact!.phone.toString()}',
                           style: TextStyle(fontSize: 25),
                         ),
-
                       ],
                     ),
                   ],

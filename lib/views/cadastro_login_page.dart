@@ -36,7 +36,6 @@ class _CadastroState extends State<Cadastro> {
           key: _formKey,
           child: Column(
             children: [
-              ContainerWidget(text: 'Cadastrar'),
               const SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

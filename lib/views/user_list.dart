@@ -2,6 +2,8 @@ import 'package:agenda_sqlite/helpers/contact_helper.dart';
 import 'package:agenda_sqlite/models/contact_models.dart';
 import 'package:agenda_sqlite/views/user_page.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'contact_page.dart';
 
 enum OrderOptions { orderaz, orderza }
@@ -26,14 +28,18 @@ class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _AppBar(),
       backgroundColor: Colors.white,
+      appBar: _AppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showContactPage();
         },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.pink,
+        child: Icon(
+          Icons.add,
+          color: Colors.deepPurple,
+          size: 28,
+        ),
+        backgroundColor: Colors.white,
       ),
       body: ListView.builder(
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
@@ -49,37 +55,27 @@ class _UserListState extends State<UserList> {
       borderRadius: BorderRadius.circular(20),
       child: Card(
         elevation: 5,
-        color: Colors.white70,
+        color: Colors.white,
         child: GestureDetector(
           onTap: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => UserPage(
-                      contact: contacts[index],
-                    )));
+                          contact: contacts[index],
+                        )));
           },
           child: ListTile(
-            isThreeLine: true,
             title: Text(
               contacts[index].name ?? "",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  contacts[index].email ?? "",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                Text(
-                  contacts[index].phone ?? "",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ],
+            subtitle: Text(
+              contacts[index].phone ?? "",
+              style: TextStyle(fontSize: 18.0),
             ),
             trailing: Container(
               width: 100,
@@ -89,9 +85,8 @@ class _UserListState extends State<UserList> {
                     onPressed: () {
                       _showContactPage(contact: contacts[index]);
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.edit,
-                      size: 30,
                       color: Colors.blue,
                     ),
                   ),
@@ -102,9 +97,8 @@ class _UserListState extends State<UserList> {
                         contacts.removeAt(index);
                       });
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.delete,
-                      size: 30,
                       color: Colors.red,
                     ),
                   ),
@@ -119,13 +113,19 @@ class _UserListState extends State<UserList> {
 
   _AppBar() {
     return AppBar(
-      elevation: 0,
-      title: Text("Contatos"),
-      backgroundColor: Colors.white,
+
+      elevation: 1,
+      title: Text(
+        "Contatos",
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: Colors.deepPurple,
       centerTitle: true,
-      toolbarHeight: 70,
       actions: <Widget>[
         PopupMenuButton<OrderOptions>(
+          color: Colors.white,
           itemBuilder: (context) => <PopupMenuEntry<OrderOptions>>[
             const PopupMenuItem<OrderOptions>(
               child: Text("Ordenar de A-Z"),
@@ -139,17 +139,6 @@ class _UserListState extends State<UserList> {
           onSelected: _orderList,
         )
       ],
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(90),
-          ),
-          gradient: LinearGradient(
-              colors: [(Colors.grey), (Colors.pink)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter),
-        ),
-      ),
     );
   }
 
@@ -158,8 +147,8 @@ class _UserListState extends State<UserList> {
         context,
         MaterialPageRoute(
             builder: (context) => ContactPage(
-              contact: contact,
-            )));
+                  contact: contact,
+                )));
     if (recContact != null) {
       if (contact != null) {
         await helper.updateContact(recContact);

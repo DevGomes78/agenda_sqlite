@@ -1,5 +1,5 @@
 
-import 'package:agenda_sqlite/components/container_widget.dart';
+import 'package:agenda_sqlite/views/schedule_page.dart';
 import 'package:agenda_sqlite/views/user_list.dart';
 import 'package:flutter/material.dart';
 
@@ -9,20 +9,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _indiceAtual = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: Colors.deepPurple,
+        title: Text(
+          'Clinica Estetica ',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.menu, color: Colors.white),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
-            ContainerWidget(text: 'Clinica'),
+            SizedBox(height: 30),
             Container(
-              height: 450,
+              height: 550,
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -30,140 +41,121 @@ class _HomePageState extends State<HomePage> {
                   gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 5,
+                    crossAxisSpacing: 5,
                   ),
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserList()));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => UserList()));
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.lightGreen,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              blurRadius: 10,
-                            ),
-                          ]
+                      child: Card(
+                        elevation: 5,
+                        child: Container(
+
+                          child: Column(
+                            children: const [
+                              SizedBox(height: 20),
+                              Icon(
+                                Icons.person,
+                                size: 80,
+                                color: Colors.orange,
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'Contatos',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AgendaPage(),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        elevation: 5,
+                        child: Container(
+                          child: Column(
+                            children: const [
+                              SizedBox(height: 20),
+                              Icon(
+                                Icons.article,
+                                size: 80,
+                                color: Colors.red,
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'Agenda',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      elevation: 5,
+                      child: Container(
                         child: Column(
                           children: const [
                             SizedBox(height: 20),
                             Icon(
-                              Icons.person,
+                              Icons.account_box_rounded,
                               size: 80,
-                              color: Colors.white60,
+                              color: Colors.teal,
                             ),
                             SizedBox(height: 20),
                             Text(
-                              'Contatos',
+                              'Fornecedores',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.orange,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 5,
+                    Card(
+                      elevation: 5,
+                      child: Container(
+                        child: Column(
+                          children: const [
+                            SizedBox(height: 20),
+                            Icon(
+                              Icons.receipt_sharp,
+                              size: 80,
+                              color: Colors.blue,
                             ),
-                          ]
-                      ),
-                      child: Column(
-                        children: const [
-                          SizedBox(height: 20),
-                          Icon(
-                            Icons.article,
-                            size: 80,
-                            color: Colors.white60,
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            'Agenda',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                            SizedBox(height: 20),
+                            Text(
+                              'Relatorios',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.pink.withOpacity(0.3),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 1,
-                            ),
-                          ]
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 20),
-                          Icon(
-                            Icons.account_box_rounded,
-                            size: 80,
-                            color: Colors.white60,
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            'Fornecedores',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.lightBlueAccent,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              blurRadius: 10,
-                            ),
-                          ]
-                      ),
-                      child: Column(
-                        children: const [
-                          SizedBox(height: 20),
-                          Icon(
-                            Icons.receipt_sharp,
-                            size: 80,
-                            color: Colors.white60,
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            'Relatorios',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -173,30 +165,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white70,
-        currentIndex: _indiceAtual,
-        onTap: onTabTapped,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.water_damage_outlined, size: 30),
-              title: Text("Minha conta")
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.article, size: 30),
-              title: Text("Minha Agenda")
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person, size: 30),
-              title: Text("Meus Contatos")
-          ),
-        ],
-      ),
     );
-  }
-  void onTabTapped(int index) {
-    setState(() {
-      _indiceAtual = index;
-    });
   }
 }
